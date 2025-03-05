@@ -14,6 +14,12 @@ variable "candidato" {
   default     = "SeuNome"
 }
 
+variable "volume_size" {
+  description = "Tamanho do volume de disco"
+  type        = number
+  default     = 20
+}
+
 resource "tls_private_key" "ec2_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
@@ -128,7 +134,7 @@ data "aws_ami" "debian12" {
   associate_public_ip_address = true
 
   root_block_device {
-    volume_size           = 20
+    volume_size           = var.volume_size
     delete_on_termination = true
   }
 
