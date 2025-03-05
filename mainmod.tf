@@ -82,15 +82,33 @@ resource "aws_route_table_association" "main_association" {
 
 resource "aws_security_group" "main_sg" {
   name        = "${var.projeto}-${var.candidato}-sg"
-  description = "Permitir SSH de qualquer lugar e todo o trÃ¡fego de saÃ­da"
+  description = "Permitir SSH de um IP específico, HTTP, ICMP e todo o tráfego de saída"
   vpc_id      = aws_vpc.main_vpc.id
 
   # Regras de entrada
   ingress {
-    description      = "Allow SSH from anywhere"
+    description      = "Allow SSH from a specific IP"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"] (No caso aqui estaria o IP específico ou um intervalo de IPs)
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+ ingress {
+    description      = "Allow HTTP from anywhere"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+ ingress {
+    description      = "Allow ICMP (ping) from anywhere"
+    from_port        = -1
+    to_port          = -1
+    protocol         = "icmp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
