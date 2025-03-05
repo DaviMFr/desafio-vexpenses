@@ -80,6 +80,18 @@ resource "aws_route_table_association" "main_association" {
   }
 }
 
+resource "aws_cloudtrail" "main_cloudtrail" {
+  name                          = "${var.projeto}-${var.candidato}-cloudtrail"
+  s3_bucket_name                = "${var.projeto}-${var.candidato}-cloudtrail-bucket"
+  include_global_service_events = true
+  is_multi_region_trail         = true
+  enable_log_file_validation    = true
+
+  tags = {
+    Name = "${var.projeto}-${var.candidato}-cloudtrail"
+  }
+}
+
 resource "aws_security_group" "main_sg" {
   name        = "${var.projeto}-${var.candidato}-sg"
   description = "Permitir SSH de um IP específico, HTTP, ICMP e todo o tráfego de saída"
