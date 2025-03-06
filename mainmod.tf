@@ -140,6 +140,28 @@ resource "aws_security_group" "main_sg" {
   }
 }
 
+resource "aws_waf_web_acl" "main_waf" {
+  name        = "${var.projeto}-${var.candidato}-waf"
+  metric_name = "${var.projeto}-${var.candidato}-waf-metric"
+
+  default_action {
+    type = "ALLOW"
+  }
+
+  rules {
+    action {
+      type = "BLOCK"
+    }
+
+    priority = 1
+    rule_id  = "waf-rule-id"  # Aqui seria colocado o ID da regra
+  }
+
+  tags = {
+    Name = "${var.projeto}-${var.candidato}-waf"
+  }
+}
+
 data "aws_ami" "debian12" {
   most_recent = true
 
